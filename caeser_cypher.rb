@@ -1,6 +1,25 @@
-def caeser_cypher(string, shift)
-  
-  number_array = string.chars.map(&:ord)
+# frozen_string_literal: true
+
+class CaeserCypher
+  def initialize(string, shift)
+    @string = string
+    @shift = shift
+    @shifted_numbers = []
+    @encoded_message = nil
+  end
+
+  def run_caeser_cypher
+    number_array = create_number_array
+    @shifted_numbers = create_switch(number_array, @shift)
+    encode_message
+    print_encoded_message
+  end
+
+  private
+
+  def create_number_array
+    @string.chars.map(&:ord)
+  end
 
   def create_switch(number_array, shift)
     number_array.map do |ordinal|
@@ -14,16 +33,14 @@ def caeser_cypher(string, shift)
     end
   end
 
-  shifted_numbers = create_switch(number_array, shift)
+  def encode_message
+    @encoded_message = @shifted_numbers.map(&:chr).join
+  end
 
-  #reconvert to letters and join words
-  encoded_message = shifted_numbers.map(&:chr).join
-
-  puts "#{encoded_message}"
+  def print_encoded_message
+    puts @encoded_message
+  end
 end
 
-caeser_cypher("I am a cat!", 4)
-
-
-
-
+cypher = CaeserCypher.new('I am a cat!', 4)
+cypher.run_caeser_cypher
